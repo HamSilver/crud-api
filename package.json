@@ -4,7 +4,8 @@
   "description": "Simple CRUD API with in-memory database",
   "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon ./src/index.ts"
+    "start:dev": "nodemon ./src/index.ts",
+    "start:multi": "nodemon ./src/index.ts --multi"
   },
   "repository": {
     "type": "git",
