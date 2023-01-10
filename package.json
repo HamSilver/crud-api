@@ -5,18 +5,20 @@
   "main": "index.js",
   "scripts": {
     "start:dev": "nodemon ./src/index.ts",
-    "start:multi": "nodemon ./src/index.ts --multi"
+    "start:multi": "nodemon ./src/index.ts --multi",
+    "make": "tsc"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/HamSilver/crud-api.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Stanislav Kolpakov (HamSilver)",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/HamSilver/crud-api/issues"
   },
+  "type": "module",
   "homepage": "https://github.com/HamSilver/crud-api#readme",
   "dependencies": {
     "@types/node": "^18.11.18",

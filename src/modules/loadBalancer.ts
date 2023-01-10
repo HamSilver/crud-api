@@ -5,7 +5,7 @@ import {
   ServerResponse,
   request,
 } from "node:http";
-import { ERROR } from "./staticData";
+import { CODE } from "./staticData.js";
 
 export class LoadBalancer {
   private port: number = 0;
@@ -47,13 +47,13 @@ export class LoadBalancer {
         };
         console.log("req on port:", options.port);
         const proxy = request(options, function (proxyRes: IncomingMessage) {
-          res.writeHead(proxyRes.statusCode ?? +ERROR.e500, proxyRes.headers);
+          res.writeHead(proxyRes.statusCode ?? CODE.e500, proxyRes.headers);
           proxyRes.pipe(res, { end: true });
         });
 
         req.pipe(proxy, { end: true });
       } catch {
-        console.log(ERROR.e500);
+        console.log(CODE.e500);
       }
     });
   }
