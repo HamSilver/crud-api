@@ -1,7 +1,8 @@
 enum MESSAGE {
   BAD_REQUEST = "Request body does not contain required fields",
   NOT_FOUND = "Requested resource not found",
-  SERVER_ERROR = "Server side error"
+  INVALID_ID = "Invalid ID requested",
+  SERVER_ERROR = "Server side error",
 }
 
 enum METHOD {
@@ -14,6 +15,7 @@ enum METHOD {
 enum CODE {
   c200 = 200,
   c201 = 201,
+  c204 = 204,
   e400 = 400,
   e401 = 401,
   e404 = 404,
