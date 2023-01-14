@@ -5,9 +5,10 @@ import {
   ServerResponse,
   request,
 } from "node:http";
-import { CODE } from "./staticData.js";
+import { CODE, HEADER_JSON, MESSAGE } from "./staticData.js";
 
 export class LoadBalancer {
+  server: Server | null = null;
   private port: number = 0;
   private nextWorker: number = 0;
   private cpuAmount: number = 1;
@@ -19,8 +20,8 @@ export class LoadBalancer {
   }
 
   private async init(port: number): Promise<void> {
-    const server = await this.createServer();
-    server.listen(port, () => {
+    this.server = await this.createServer();
+    this.server.listen(port, () => {
       console.log(`LoadBalancer listening on port: ${port}`);
     });
   }
@@ -36,8 +37,6 @@ export class LoadBalancer {
   private async createServer(): Promise<Server> {
     return createServer(async (req: IncomingMessage, res: ServerResponse) => {
       try {
-        console.log(`serve: ${req.url}`);
-
         const options = {
           hostname: "localhost",
           port: this.getPort(),
@@ -45,15 +44,14 @@ export class LoadBalancer {
           method: req.method,
           headers: req.headers,
         };
-        console.log("req on port:", options.port);
         const proxy = request(options, function (proxyRes: IncomingMessage) {
-          res.writeHead(proxyRes.statusCode ?? CODE.e500, proxyRes.headers);
+          res.writeHead(proxyRes.statusCode ?? CODE.E500, proxyRes.headers);
           proxyRes.pipe(res, { end: true });
         });
 
         req.pipe(proxy, { end: true });
       } catch {
-        console.log(CODE.e500);
+        res.writeHead(CODE.E500, HEADER_JSON).end(MESSAGE.SERVER_ERROR);
       }
     });
   }

@@ -1,8 +1,8 @@
 enum MESSAGE {
-  BAD_REQUEST = "Request body does not contain required fields",
-  NOT_FOUND = "Requested resource not found",
-  INVALID_ID = "Invalid ID requested",
-  SERVER_ERROR = "Server side error",
+  BAD_REQUEST = "{ \"message\": \"Request body does not contain required fields\" }",
+  NOT_FOUND = "{ \"message\": \"Requested resource not found\" }",
+  INVALID_ID = "{ \"message\": \"Invalid ID requested\" }",
+  SERVER_ERROR = "{ \"message\": \"Server side error\" }",
 }
 
 enum METHOD {
@@ -13,26 +13,18 @@ enum METHOD {
 }
 
 enum CODE {
-  c200 = 200,
-  c201 = 201,
-  c204 = 204,
-  e400 = 400,
-  e401 = 401,
-  e404 = 404,
-  e500 = 500,
+  C200 = 200,
+  C201 = 201,
+  C204 = 204,
+  E400 = 400,
+  E404 = 404,
+  E500 = 500,
 }
 
 const ENDPOINT = "/api/users";
 
-const HEADER = "Content-Type";
+const HEADER_JSON = { "Content-Type": "application/json" };
 
-enum CONTENT_TYPE {
-  JSON = "application/json",
-  TEXT = "text/plain",
-}
+const CMD = "refresh";
 
-const HEADER_JSON = { [HEADER]: CONTENT_TYPE.JSON };
-
-const HEADER_TEXT = { [HEADER]: CONTENT_TYPE.TEXT };
-
-export { MESSAGE, METHOD, CODE, ENDPOINT, HEADER_JSON, HEADER_TEXT };
+export { MESSAGE, METHOD, CODE, ENDPOINT, HEADER_JSON, CMD };

@@ -1,8 +1,7 @@
-import nodeCluster from "node:cluster";
 import { Users } from "./users.js";
 
 class Database {
-  public users: Map<string, Users> = new Map<string, Users>();
+  users: Map<string, Users> = new Map<string, Users>();
 
   getAll(): Users[] {
     return [...this.users.values()];
@@ -35,8 +34,7 @@ class Database {
     const age: number = (user as Users).age;
     const hobbies: string[] = (user as Users).hobbies;
 
-    if (
-      !user ||
+    return !user ||
       typeof user !== "object" ||
       !username ||
       typeof username !== "string" ||
@@ -44,10 +42,8 @@ class Database {
       typeof age !== "number" ||
       !Array.isArray(hobbies) ||
       hobbies.some((item) => typeof item !== "string")
-    )
-      return false;
-
-    return true;
+      ? false
+      : true;
   }
 
   async load(json: string): Promise<void> {
