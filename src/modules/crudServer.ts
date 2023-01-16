@@ -195,6 +195,7 @@ export class CrudServer {
 
   private doResponse(res: ServerResponse, code: CODE, body = ""): void {
     let message = body;
+    let header = HEADER_JSON;
     if (!message) {
       switch (code) {
         case CODE.E400:
@@ -209,6 +210,7 @@ export class CrudServer {
         default:
       }
     }
+    header.Etag = `${process.pid}`;
     res.writeHead(code, HEADER_JSON).end(message);
   }
 }

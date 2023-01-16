@@ -1,13 +1,16 @@
 {
   "name": "crud-api",
-  "version": "0.6.0",
+  "version": "0.9.0",
   "description": "Simple CRUD API with in-memory database",
   "main": "index.js",
   "scripts": {
     "start:dev": "nodemon ./src/index.ts",
-    "start:multi": "nodemon ./src/index.ts --multi",
+    "start:prod": "npm run build && node ./bundle/index.cjs",
+    "start:multi": "npm run build && node ./bundle/index.cjs --multi",
     "make": "tsc",
-    "test": "npm run make && cross-env NODE_OPTIONS=--experimental-vm-modules jest --testTimeout=10000 --detectOpenHandles"
+    "build": "npm run make && npx webpack",
+    "test": "npm run build && cross-env NODE_OPTIONS=--experimental-vm-modules jest --testTimeout=10000 --detectOpenHandles",
+    "test:multi": "npx newman run ./__tests__/CRUD_API.postman_collection.json --env-var PORT=4000"
   },
   "repository": {
     "type": "git",
@@ -26,6 +29,7 @@
     "@types/uuid": "^9.0.0",
     "cross-env": "^7.0.3",
     "dotenv": "^16.0.3",
+    "newman": "^5.3.2",
     "nodemon": "^2.0.20",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4",

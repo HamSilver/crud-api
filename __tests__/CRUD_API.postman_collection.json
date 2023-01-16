@@ -1,0 +1,256 @@
+{
+	"info": {
+		"_postman_id": "f594357a-a591-4598-b189-5aa93d709c40",
+		"name": "CRUD_API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "25347737"
+	},
+	"item": [
+		{
+			"name": "Get empty users from first process",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"should return an empty array\", function () {\r",
+							"    let jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"array\");\r",
+							"    pm.expect(jsonData).to.be.empty;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"should have an Etag header\", function () {\r",
+							"    pm.response.to.have.header(\"Etag\");\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"LAST_ETAG\", pm.response.headers.get(\"Etag\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:{{PORT}}/api/users"
+			},
+			"response": []
+		},
+		{
+			"name": "Create user and get it back in another process",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"should create user and get it back\", function () {\r",
+							"    let jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.be.an(\"object\");\r",
+							"    pm.expect(jsonData.username).to.be.equal(\"Test Name\");\r",
+							"    pm.expect(jsonData.age).to.be.equal(20);\r",
+							"    pm.expect(jsonData.hobbies).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"should executed in another process\", function () {\r",
+							"    let etagValue = pm.response.headers.get(\"Etag\");\r",
+							"    pm.expect(etagValue).to.be.not.equal(pm.collectionVariables.get(\"LAST_ETAG\"));\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"LAST_ETAG\", pm.response.headers.get(\"Etag\"));\r",
+							"pm.collectionVariables.set(\"LAST_ID\", pm.response.json().id);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"Test Name\",\r\n    \"age\": 20,\r\n    \"hobbies\": [\r\n        \"Testing\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:{{PORT}}/api/users"
+			},
+			"response": []
+		},
+		{
+			"name": "Get user by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"should get the user\", function () {\r",
+							"    let jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.username).to.be.equal(\"Test Name\");\r",
+							"    pm.expect(jsonData.age).to.be.equal(20);\r",
+							"    pm.expect(jsonData.hobbies).to.be.an(\"array\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"should executed in another process\", function () {\r",
+							"    let etagValue = pm.response.headers.get(\"Etag\");\r",
+							"    pm.expect(etagValue).to.be.not.equal(pm.collectionVariables.get(\"LAST_ETAG\"));\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"LAST_ETAG\", pm.response.headers.get(\"Etag\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:{{PORT}}/api/users/{{LAST_ID}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Update user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"should get the user\", function () {\r",
+							"    let jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.id).to.be.equal(pm.collectionVariables.get(\"LAST_ID\"));\r",
+							"    pm.expect(jsonData.username).to.be.equal(\"New Name\");\r",
+							"    pm.expect(jsonData.age).to.be.equal(40);\r",
+							"    pm.expect(jsonData.hobbies).to.be.an(\"array\");\r",
+							"    pm.expect(jsonData.hobbies[0]).to.be.equal(\"Diving\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"should executed in another process\", function () {\r",
+							"    let etagValue = pm.response.headers.get(\"Etag\");\r",
+							"    pm.expect(etagValue).to.be.not.equal(pm.collectionVariables.get(\"LAST_ETAG\"));\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"LAST_ETAG\", pm.response.headers.get(\"Etag\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"{{LAST_ID}}\",\r\n    \"username\": \"New Name\",\r\n    \"age\": 40,\r\n    \"hobbies\": [\r\n        \"Diving\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:{{PORT}}/api/users/{{LAST_ID}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"should return status 204\", function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"should executed in another process\", function () {\r",
+							"    let etagValue = pm.response.headers.get(\"Etag\");\r",
+							"    pm.expect(etagValue).to.be.not.equal(pm.collectionVariables.get(\"LAST_ETAG\"));\r",
+							"});\r",
+							"\r",
+							"pm.collectionVariables.set(\"LAST_ETAG\", pm.response.headers.get(\"Etag\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": "localhost:{{PORT}}/api/users/{{LAST_ID}}"
+			},
+			"response": []
+		},
+		{
+			"name": "Get user by deleted ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"should return status 404\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"should get message\", function () {\r",
+							"    let jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.be.equal(\"Requested resource not found\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"should executed in another process\", function () {\r",
+							"    let etagValue = pm.response.headers.get(\"Etag\");\r",
+							"    pm.expect(etagValue).to.be.not.equal(pm.collectionVariables.get(\"LAST_ETAG\"));\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "localhost:{{PORT}}/api/users/{{LAST_ID}}"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "LAST_ETAG",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "LAST_ID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "PORT",
+			"value": "4000",
+			"type": "string"
+		}
+	]
+}

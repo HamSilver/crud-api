@@ -1,8 +1,8 @@
 enum MESSAGE {
-  BAD_REQUEST = "{ \"message\": \"Request body does not contain required fields\" }",
-  NOT_FOUND = "{ \"message\": \"Requested resource not found\" }",
-  INVALID_ID = "{ \"message\": \"Invalid ID requested\" }",
-  SERVER_ERROR = "{ \"message\": \"Server side error\" }",
+  BAD_REQUEST = '{ "message": "Request body does not contain required fields" }',
+  NOT_FOUND = '{ "message": "Requested resource not found" }',
+  INVALID_ID = '{ "message": "Invalid ID requested" }',
+  SERVER_ERROR = '{ "message": "Server side error" }',
 }
 
 enum METHOD {
@@ -23,7 +23,7 @@ enum CODE {
 
 const ENDPOINT = "/api/users";
 
-const HEADER_JSON = { "Content-Type": "application/json" };
+const HEADER_JSON = { "Content-Type": "application/json", Etag: "" };
 
 const CMD = "refresh";
 
