@@ -26,5 +26,5 @@ Node.js CRUD application written in TypeScript.
 
 1. For **Jest** tests type command: `npm run test`. This tests must be run with **disabled** server.
 2. For **Postman** tests you need to do:
-2.1. Run server - `npm run start:multi`.
-2.2. Run test with command: `npm run test:multi`.
+ - Run server - `npm run start:multi`.
+ - Run test with command: `npm run test:multi`.
