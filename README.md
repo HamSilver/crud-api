@@ -28,3 +28,5 @@ Node.js CRUD application written in TypeScript.
 2. For **Postman** tests you need to do:
  - Run server - `npm run start:multi`.
  - Run test with command: `npm run test:multi`.
+ 
+  For testing purposes, server responses are contain **Etag** header with process pid. Using this headers are allow to identificate a process which make the response.
